@@ -47,5 +47,17 @@ Even if things go down or something change kubenetes will make sure that your ap
 Kubeclt is the command line utility of kubernetes. This is tool or command that we use to operate the kubernetes cluster.
 
 ```sh
+# To identify the version of kubectl client and the kubernetes server along with any other tool related
 kubectl version
 ```
+```sh
+# Lists basic help information such as basic commands
+kubectl --help
+```
+```sh
+# To see a list of nodes in the cluster
+kubectl get nodes
+# For more information we can use -o wide 
+kubectl get nodes -o wide
+```
+
