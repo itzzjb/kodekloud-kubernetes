@@ -1,3 +1,5 @@
+# What is Kubernetes?
+
 With kubenetes you will be able to workwith thosands of containers.
 
 ```sh
@@ -21,5 +23,11 @@ Even if things go down or something change kubenetes will make sure that your ap
 
 ### High Level View
 
+**Nodes**: 
+A node is a machine physical or virtual which kubernetes is installed. And nodes is a worker machine and this is where the containers will be launched nby kubernetes. Also if a node fail our application will go down, so we need to have more than 1 node.
 
-Nodes: 
+**Cluster**:
+A cluster is a set of nodes grouped together. This way even if one node fails you have the application available from other nodes. And having multiple nodes helps in sharing load between nodes as well.
+
+**Control Plane (Master Node)**:
+The control plane is another node with kubernetes components installed init. The control plane watches over the nodes in the cluster and is responsible for the actual orchestration of the containers of the worker nodes.
