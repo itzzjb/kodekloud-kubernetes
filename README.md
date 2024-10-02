@@ -5,14 +5,17 @@ With kubenetes you will be able to workwith thosands of containers.
 ```sh
 # Running 1000 container instances
 kubectl run --replicas=1000 my-web-server
-
+```
+```sh
 # Scaling up and down the containers
 kubeclt scale --replicas=2000 my-web-server
 # Can also be configured to scale up and down automatically
-
+```
+```sh
 # Can upgrade all of the containers in a rolling fashion
 kubectl rolling-update my-web-server --image=web-server:2
-
+```
+```sh
 # Can also rollback if any problem occured
 kubectl rolling-update my-web-server --rollback
 ```
@@ -38,3 +41,11 @@ Even if things go down or something change kubenetes will make sure that your ap
 2. **etcd** - This is a destributed and relaiable key value store used by kubernetes to store all data used to manage the cluster. This is where information about the nodes in the cluster and the application running on the cluster and any other
 3. **contoller-manager** - This is the brain behind the orchestration. They are responsible for noticing and responding when nodes, containers and endpoints go down. The controllers make decisions to bring up new containers in such cases.  
 4. **kube-scheduler** - This is responsible for distributing work or containers across multiple nodes. It looks for newly created containers and assigns them to nodes.
+
+# Kubectl 
+
+Kubeclt is the command line utility of kubernetes. This is tool or command that we use to operate the kubernetes cluster.
+
+```sh
+kubectl version
+```
