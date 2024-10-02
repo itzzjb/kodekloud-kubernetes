@@ -25,6 +25,9 @@ Even if things go down or something change kubenetes will make sure that your ap
 
 **Nodes**: 
 - A node is a machine physical or virtual which kubernetes is installed. And nodes is a worker machine and this is where the containers will be launched nby kubernetes. Also if a node fail our application will go down, so we need to have more than 1 node.
+1. **kubelet** -  This agent is responsible for making sure that the containers are running on the nodes as expected.
+2. **kube-proxy** -  This is responsible for maintaining rules on the nodes. Also help to communicate with each other, the worker nodes and the containers. This is more ,.of the networking component.
+3. **container-runtime** - This is responsible for running containers. We are running applications in clusters in the form of containers. 
 
 **Cluster**:
 - A cluster is a set of nodes grouped together. This way even if one node fails you have the application available from other nodes. And having multiple nodes helps in sharing load between nodes as well.
