@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: myapp-replicaset
+  labels:
+    app: myapp
+    type: front-end
+spec:
+  # spec defines whats inside this object
+  # here the replica set creates multiple instances of a pod
+  # we create a template section under spec to provide a pod template
+  # ... to be used by the replica set to create replicas
+  template:
+    # here what we are going to do is to get the metadata and spec sections of the pod-definition file
+    metadata:
+      name: myapp-pod
+      labels:
+        app: myapp
+        type: front-end
+    spec:
+      containers:
+        - name: nginx-container
+          image: nginx
+  # inputting the number of  replicas that we need to create from the pod template.
+  replicas: 3
+  # replicaSet requires a selector sections
+  # helps to identify what pods fall under the replica set
+  # this is because replica sets can also manage pods that are not created as a part of the replica set creation process
+  # for example there might be pods that are created before that replica set creation.
+  selector:
+    # matchLabels is used to match the labels of the pods
+    # all the pods that have the same labels will be managed by the replica set
+    matchLabels:
+      type: front-end

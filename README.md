@@ -194,3 +194,57 @@ kubectl run redis --image=nginx --dry-run=client -o yaml > pod-definition.yml
 ```
 
 # Replica Sets
+
+If we only have a single pod running our application, for some reason our pod fails our application will be down. Users will no longer able to access out application.
+
+To prevent users from loosing access to our application we would like to have more than one instance or pod running at the same time. And that way even if one fails we still have our application running.
+
+And replica set get the failed one back, ensuring **predefined number of replicas are always running at all times**. Helps us running multiple instances of a single pod in the kubernetes cluster providing **high availability**.
+
+Even if you have a single pod, the replica set can help by automatically bringing up a new pod when an existing one fails.
+
+We can also use the replica sets to create multiple pods and share the load across them. We deploy these pods across other nodes in the cluster. So, it helps us balance the load across multiple pods on different nodes as well as scale our application when the demand increases.
+
+A pod has **one-to-one relationship with a node**. A pod can only run on one node at a time. You cannot move a running pod from one node to the other. You will have to kill it and recreate it on another node.
+
+Technically the schedular decides which node a pod gets assigned to. And there are ways to control that.
+
+### Replicaset Definition file
+
+```yaml filename="replicaset-definition.yml
+# replica set support apiVersion apps/v1
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: myapp-replicaset
+  labels:
+    app: myapp
+    type: front-end
+spec:
+  # spec defines whats inside this object
+  # here the replica set creates multiple instances of a pod
+  # we create a template section under spec to provide a pod template
+  # ... to be used by the replica set to create replicas
+  template:
+    # here what we are going to do is to get the metadata and spec sections of the pod-definition file
+    metadata:
+      name: myapp-pod
+      labels:
+        app: myapp
+        type: front-end
+    spec:
+      containers:
+        - name: nginx-container
+          image: nginx
+  # inputting the number of  replicas that we need to create from the pod template.
+  replicas: 3
+  # replicaSet requires a selector sections
+  # helps to identify what pods fall under the replica set
+  # this is because replica sets can also manage pods that are not created as a part of the replica set creation process
+  # for example there might be pods that are created before that replica set creation.
+  selector:
+    # matchLabels is used to match the labels of the pods
+    # all the pods that have the same labels will be managed by the replica set
+    matchLabels:
+      type: front-end
+```
