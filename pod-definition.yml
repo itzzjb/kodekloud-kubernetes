@@ -9,5 +9,6 @@ metadata:
     type: front-end
 spec:
   containers:
+    # this container property is a list because we are able to have multiple containers in a single pod
     - name: nginx-container
       image: nginx

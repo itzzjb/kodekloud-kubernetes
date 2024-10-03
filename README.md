@@ -101,7 +101,7 @@ kubectl get pods
 
 The above way is the imperative way of creating pods and running them. Normally in complex real world scenarios we are using the **declarative way** by using YAML files.
 
-# YAML Files
+### YAML Files
 
 Kubernetes uses YAML files as inputs for many different cases. A kubernetes definition files contains 4 top level fields. The **_apiVersion, kind, metadata and spec_**.
 
@@ -178,5 +178,19 @@ kubectl delete pod myapp-pod
 
 ```sh
 # if we do some changes to the pod-definition file we can apply those changes using the following command
+# this can also be used as a alternative to create as well
 kubectl apply -f pod-definition.yml
 ```
+
+```sh
+# we can get the pod-definition file using the --dry-run option
+# the following command will output the pod-definition file that we would need to create the pod-definition.yml file
+kubectl run redis --image=nginx --dry-run=client -o yaml
+```
+
+```sh
+# we can redirect the about standard output as a standard input to a file
+kubectl run redis --image=nginx --dry-run=client -o yaml > pod-definition.yml
+```
+
+# Replica Sets
