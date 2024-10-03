@@ -245,6 +245,54 @@ spec:
   selector:
     # matchLabels is used to match the labels of the pods
     # all the pods that have the same labels will be managed by the replica set
+    # the pods that should be managed by a specific replica set must have the same label (so we can filter)
     matchLabels:
       type: front-end
 ```
+
+Once the file is created we can the following command in order to kubernetes to create the replicas.
+
+```sh
+# creates the replica set using the replicaset-definition.yml file.
+kubectl create -f replicaset-definition.yml
+```
+
+```sh
+# to get list of the replica sets available
+kubectl get replicaset
+```
+
+```sh
+# to see all the pods including the pods created using the replica set
+kubectl get pods
+```
+
+If we want to change the number of replicas (scale up and down) we can change the number of replicas we can change the number of replicas in the replicaset-definition.yml file. Then run the following command.
+
+```sh
+# this will update the replica set
+kubectl replace -f replicaset-definition.yml
+```
+
+Or, we can use the following way instead.
+
+```sh
+# we can either input the definition file
+kubectl scale --replicas=6 -f replicaset-definition.yml
+```
+
+```sh
+# or the replicaset name
+kubectl scale --replicas=6 replicaset myapp-replicaset
+```
+
+```sh
+# to delete a replica set
+kubectl delete replicaset myapp-replicaset
+```
+
+However using the second way will not result in number of replicas being updated automatically in the file. Even though we scale the number of replicas tp be 6 the number of replicas stated in the file would be 3.
+
+So, the recommended approach is to always create yml files and edit the yml files. That way there won't be any difference between the actual state of the environment and what's defined in the yml files.
+
+There are also options to automatically scale based on the load.
