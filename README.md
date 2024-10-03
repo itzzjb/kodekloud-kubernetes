@@ -260,6 +260,8 @@ kubectl create -f replicaset-definition.yml
 ```sh
 # to get list of the replica sets available
 kubectl get replicaset
+# or
+kubectl get rs # rs - can be used to anywhere we have replicaset
 ```
 
 ```sh
@@ -270,6 +272,11 @@ kubectl get pods
 ```sh
 # to get more information on the replica set list
 kubectl get replicaset -o wide
+```
+
+```sh
+# or to find more details about a specific replica set we can use the following command
+kubectl describe replicaset myapp-replicaset
 ```
 
 If we want to change the number of replicas (scale up and down) we can change the number of replicas we can change the number of replicas in the replicaset-definition.yml file. Then run the following command.
@@ -294,6 +301,19 @@ kubectl scale --replicas=6 replicaset myapp-replicaset
 ```sh
 # to delete a replica set
 kubectl delete replicaset myapp-replicaset
+```
+
+```sh
+# if we have already created a replica set and need to find the replicaset-definition file and edit it we can use the following command
+# this will open this file using vim
+# i -> insert mode (start typing)
+# :w -> write(save)
+# :q -> quit if the file is saved
+# :wq or :x -> write(save) and quit
+# :q! -> quit without save
+kubectl edit replicaset myapp-replicaset
+# once updated we need to delete all the existing pods of that replica set
+# then the replica set will automatically spin of new pods with the new configurations we have updated
 ```
 
 However using the second way will not result in number of replicas being updated automatically in the file. Even though we scale the number of replicas tp be 6 the number of replicas stated in the file would be 3.
