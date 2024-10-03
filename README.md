@@ -267,6 +267,11 @@ kubectl get replicaset
 kubectl get pods
 ```
 
+```sh
+# to get more information on the replica set list
+kubectl get replicaset -o wide
+```
+
 If we want to change the number of replicas (scale up and down) we can change the number of replicas we can change the number of replicas in the replicaset-definition.yml file. Then run the following command.
 
 ```sh
