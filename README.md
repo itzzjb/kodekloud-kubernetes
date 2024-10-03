@@ -67,6 +67,9 @@ kubectl --help
 ```sh
 # To see a list of nodes in the cluster
 kubectl get nodes
+```
+
+```sh
 # For more information we can use -o wide
 kubectl get nodes -o wide
 ```
@@ -96,6 +99,84 @@ kubectl run nginx --image=nginx
 kubectl get pods
 ```
 
-The above way is the imperative way of creating pods and running them. Normally in complex real world scenarios we are using the declarative way by using YAML files.
+The above way is the imperative way of creating pods and running them. Normally in complex real world scenarios we are using the **declarative way** by using YAML files.
 
 # YAML Files
+
+Kubernetes uses YAML files as inputs for many different cases. A kubernetes definition files contains 4 top level fields. The **_apiVersion, kind, metadata and spec_**.
+
+**apiVersion** :
+
+- This is the version of the kubernetes api we are using to create the object. Depending on what we are trying to create we must use the right API version.
+
+| Kind       | Version |
+| ---------- | ------- |
+| Pod        | v1      |
+| Service    | v1      |
+| ReplicaSet | apps/v1 |
+| Deployment | apps/v1 |
+
+**kind** :
+
+- Refers to the kind of object that we are creating, like **Pod**. Remember that this is case-sensitive.
+- Some other possible values here are **Service, ReplicaSet and Deployment**.
+
+**metadata**:
+
+- Meta data is the data about the object like it's name , labels etc.
+
+**spec**:
+
+- This is the specification section which is written as spec. Depending on the object we are going to create, this is where we are going to provide additional information to kubernetes regarding that object. This will be different from object to object.
+
+### Pod Definition File
+
+```yaml filename="pod-definition.yml"
+apiVersion: v1
+kind: Pod
+metadata:
+  name: myapp-pod
+  # this labels helps you to identify these objects in later point in time.
+  # can be used to filter pods in a way like frontend, backend etc.
+  labels:
+    app: myapp
+    type: front-end
+spec:
+  containers:
+    # this container property is a list because we are able to have multiple containers in a single pod
+    - name: nginx-container
+      image: nginx
+```
+
+Once the file is created we can the following command in order to kubernetes to create the pod.
+
+```sh
+# creating a pod using a pod-definition.yml file
+# -f stands for file
+kubectl create -f pod-definition.yml
+```
+
+```sh
+# To see all pods in the cluster
+kubectl get pods
+```
+
+```sh
+# For more information we can use -o wide
+kubectl get pods -o wide
+```
+
+```sh
+# in order to get a more detailed information about a specific pod
+kubectl describe pod myapp-pod
+```
+
+```sh
+# delete a existing pod
+kubectl delete pod myapp-pod
+```
+
+```sh
+# if we do some changes to the pod-definition file we can apply those changes using the following command
+kubectl apply -f pod-definition.yml
+```
