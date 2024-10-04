@@ -405,3 +405,37 @@ kubectl apply -f deployment-definition.yml
 # here we are changing the image of the container
 kubectl set image deployment/myapp-deployment nginx-container=nginx:1.9.1
 ```
+
+In a scenario where we have the name, image, and the number of replicas there is also an imperative way to create the deployments.
+
+```sh
+# imperative way of creating a deployment
+kubectl create deployment myapp-deployment --image=nginx --replicas=3
+```
+
+# Services
+
+We can many pods in the cluster. Those pods may contain containers of web servers, databases etc. Each pod will get assigned a IP address. All the pods have internal ip addresses which they can used to communicate with each other.
+
+But these IP addresses are specific for these pods, and when a pod goes down the ip address goes down as well. So, we can't use these IP addresses in code. This is where services comes in. Service enables communication between application within a kubernetes cluster.
+
+Services acts as a load balancer or a proxy, it provides an endpoint to other services to connect to.
+
+Similarly, to expose the service to the outside to the external users, we need to create another service.
+
+So, a service **enables connectivity between applications within the cluster as well as to expose applications outside the cluster to end users**.
+
+1. **Cluster IP Service**:
+   - This is a service **_within the cluster_**, that i not exposed externally and helps different services communicate with each other.
+2. **Node Port Service**
+   - The service exposes the application on a **_port on the Node_** to be made **_accessible to the external users_**.
+3. **Load Balancer Service**
+   - This provisions a load balancer for our service and supported providers. Good example is to distribute load across different web servers on these cloud environments.
+
+### Cluster IP Service
+
+Pods are usually deployed in replicas. So there could be multiple instances of the same pod and also there could be hundreds of other pods too. So, to identify the specific pods that we need to route traffic to, the labels and selectors are used. S
+
+We can add the label of the specific pods as a selector in the service.
+
+### Service Definition File
