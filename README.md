@@ -321,3 +321,44 @@ However using the second way will not result in number of replicas being updated
 So, the recommended approach is to always create yml files and edit the yml files. That way there won't be any difference between the actual state of the environment and what's defined in the yml files.
 
 There are also options to automatically scale based on the load.
+
+# Development
+
+Even though we can deploy an application using pods and replicas it won't cut it when deploying applications for the production use cases.
+
+When newer versions of application released you would like to upgrade your application instances seamlessly. You may want to upgrade those instances one after the other. These kinds of updates are known as **rolling updates**. Also if we want to undo the recent update you would be able to **roll back** the changes that are recently carried out.
+
+And finally, if you want to make multiple changes to the environment like upgrading the underline web server versions, scaling your environment and modifying the resource allocation etc.
+
+You don't want each change to be applied immediately after the change is run. Instead you would like to apply a **pause** to your environment, make the changes and then **resume** so all changes are rolled out together. All of these capabilities are available with Kubernetes deployment.\
+
+### Deployment definition file
+
+The deployment-definition.yml file is same as the replicaset-definition.yml file. The only change that need to make is to the kind section.
+
+```yml
+apiVersion: apps/v1
+kind: Deployment # This is where it changes from replica set
+metadata:
+  name: myapp-deployment
+  labels:
+    app: myapp
+    type: front-end
+spec:
+  template:
+    metadata:
+      name: myapp-pod
+      labels:
+        app: myapp
+        labels:
+          app: myapp
+          type: front-end
+    spec:
+      containers:
+        - name: nginx-container
+          image: nginx
+  replicas: 3
+  selector:
+    matchLabels:
+      type: front-end
+```
