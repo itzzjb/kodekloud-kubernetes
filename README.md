@@ -337,7 +337,7 @@ You don't want each change to be applied immediately after the change is run. In
 The deployment-definition.yml file is same as the replicaset-definition.yml file. The only change that need to make is to the kind section.
 
 ```yml
-apiVersion: apps/v1
+apiVersion: apps/v1 # The apiVersion is apps/v1 here
 kind: Deployment # This is where it changes from replica set
 metadata:
   name: myapp-deployment
@@ -438,4 +438,35 @@ Pods are usually deployed in replicas. So there could be multiple instances of t
 
 We can add the label of the specific pods as a selector in the service.
 
-### Service Definition File
+### Cluster IP Service Definition File
+
+```yml
+apiVersion: v1 # the apiVersion should be v1
+kind: Service
+metadata:
+  name: myapp-service # name of the service
+spec:
+  type: ClusterIP # this is the default type
+  ports:
+    - targetPort: 8080 # this is the port that the application that runs in the pod is listening on
+      port: 8080 # this is the port that the service is exposed
+  # selector is used to link the service to a set of pods
+  selector:
+    # we can refer to the pod-definition.yml file and copy the labels section here
+    app: myapp
+    type: front-end
+```
+
+After creating the service-definition.yml file we can use the following commands.
+
+```sh
+# creating the service
+kubectl create -f service-definition.yml
+```
+
+```sh
+# to check get the list of all the services with newly created service
+kubectl get services
+```
+
+The service can be accessed by other pods using the Cluster IP or the name of the service.
