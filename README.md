@@ -362,3 +362,46 @@ spec:
     matchLabels:
       type: front-end
 ```
+
+After creating the deployment-definition.yml file we can run the following commands
+
+```sh
+# this will create the deployment
+kubectl create -f deployment-definition.yml
+```
+
+```sh
+# we can see the list of all the deployments
+kubectl get deployments
+```
+
+The deployment automatically creates a new replicaset.
+
+```sh
+# we can all the replica sets with the ones that are created by the deployments
+kubectl get replicaset
+```
+
+```sh
+# to the all the pods including the pods that are created by the replica set of the deployment
+kubectl get pods
+```
+
+```sh
+# we are able to see all the objects (pods, replicaset, deployments ...) in a single command
+kubectl get all
+```
+
+We might need to update or upgrade the pods of the deployment to a newer version
+
+```sh
+# we need to update the deployment-definition file first (update the image name with the newer version of the app)
+# this is the declarative approach
+kubectl apply -f deployment-definition.yml
+```
+
+```sh
+# there is a imperative approach as well
+# here we are changing the image of the container
+kubectl set image deployment/myapp-deployment nginx-container=nginx:1.9.1
+```
