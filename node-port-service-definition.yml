@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: myapp-service
+spec:
+  type: NodePort # changed the type of the service to NodePort
+  # you can have multiple port configurations because this is a list
+  ports:
+    - targetPort: 8080 # if we don't provide the target port it is assumed to be same as the port
+      port: 8080 # this is mandatory to provide
+      nodePort: 30008 # this is the port in the Node that we are going to use the expose the application to the outside.
+      # if we don't provide the nodePort a free port from the range 30000 - 32767 will be allocated automatically.
+  selector:
+    # copied from the pod-definition.yml file
+    app: myapp
+    type: front-end

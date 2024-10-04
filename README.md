@@ -448,6 +448,7 @@ metadata:
 spec:
   type: ClusterIP # this is the default type
   ports:
+    # ports are defined in the perspective of the service.
     - targetPort: 8080 # this is the port that the application that runs in the pod is listening on
       port: 8080 # this is the port that the service is exposed
   # selector is used to link the service to a set of pods
@@ -470,3 +471,52 @@ kubectl get services
 ```
 
 The service can be accessed by other pods using the Cluster IP or the name of the service.
+
+### Node Port Service
+
+This is a type of service where a normal service is created first, and then exposed to external users through a **port on the Node**.
+
+Node port can only be in a valid range from **30000 - 32767**.
+
+### Node Port Definition File
+
+This is very similar to the cluster-ip-service-definition.yml but there are a little bit of changes.
+
+```yml
+apiVersion: v1
+kind: Service
+metadata:
+  name: myapp-service
+spec:
+  type: NodePort # changed the type of the service to NodePort
+  # you can have multiple port configurations because this is a list
+  ports:
+    - targetPort: 8080 # if we don't provide the target port it is assumed to be same as the port
+      port: 8080 # this is mandatory to provide
+      nodePort: 30008 # this is the port in the Node that we are going to use the expose the application to the outside.
+      # if we don't provide the nodePort a free port from the range 30000 - 32767 will be allocated automatically.
+  selector:
+    # copied from the pod-definition.yml file
+    app: myapp
+    type: front-end
+```
+
+After creating the node-port-service-definition.yml file we can use the following commands.
+
+```sh
+# to create the service
+kubectl create -f node-port-service-definition.yml
+```
+
+```sh
+# to get the list of services with the newly created services
+kubectl get services
+```
+
+When there are **_multiple pods_** in **_same or different Nodes_** the service will automatically distribute the load between them. The service acts as a load balancer and the algorithm that is used is random. To change the algorithm or to do more configurations about the load is balanced, it's where the service meshes comes in.
+
+When the pods are distributed across multiple nodes, when a service is created without us having to do any additional configuration kubernetes creates a service that spans across all nodes in the cluster. And will **_match the target port of the pods to the same node port of all the nodes in the cluster_**.
+
+This way you can access the application with the **_IP of any node in the cluster and the same nodePort number_**.
+
+This will also be available on nodes, where even if the pods are not scheduled.
