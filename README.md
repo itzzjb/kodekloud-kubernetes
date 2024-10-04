@@ -373,6 +373,7 @@ kubectl create -f deployment-definition.yml
 ```sh
 # we can see the list of all the deployments
 kubectl get deployments
+# can also use deploy instead on deployments
 ```
 
 The deployment automatically creates a new replicaset.
@@ -511,6 +512,18 @@ kubectl create -f node-port-service-definition.yml
 ```sh
 # to get the list of services with the newly created services
 kubectl get services
+# we can also use svc instead of services
+kubectl get svc
+```
+
+```sh
+# to get more details on the service list
+ kubectl get services -o wide
+```
+
+```sh
+# to get  more details about a specific service
+kubectl describe service myapp-service
 ```
 
 When there are **_multiple pods_** in **_same or different Nodes_** the service will automatically distribute the load between them. The service acts as a load balancer and the algorithm that is used is random. To change the algorithm or to do more configurations about the load is balanced, it's where the service meshes comes in.
@@ -520,3 +533,10 @@ When the pods are distributed across multiple nodes, when a service is created w
 This way you can access the application with the **_IP of any node in the cluster and the same nodePort number_**.
 
 This will also be available on nodes, where even if the pods are not scheduled.
+
+Kubernetes creates a default service at launch.
+
+> [!NOTE]
+> Kubernetes creates a default service called "kubernetes" when the cluster is being created.
+
+The **endpoints** of a service is the pods that the services has identified, that is going to direct traffic to, based on the selector specified on the service and the labels on the pods.
