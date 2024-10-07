@@ -571,3 +571,8 @@ Depending on the platform we are deploying the cluster on, we will choose one of
 What happens when after we implemented custom networking, it now manages the networks and ips in the nodes, and assign a different network address for each network in the node. ( Like 10.240.0.0 and 10.240.1.0)
 
 This creates a virtual network of all pods and nodes, and they are all assigned for unique ip address, and by using simple routing techniques the cluster networking enables communication between different nodes and pods.
+
+```sh
+# to get details about the node and the ip address of all the pods in the cluster
+kubectl get pods -o wide
+```
