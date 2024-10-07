@@ -540,3 +540,34 @@ Kubernetes creates a default service at launch.
 > Kubernetes creates a default service called "kubernetes" when the cluster is being created.
 
 The **endpoints** of a service is the pods that the services has identified, that is going to direct traffic to, based on the selector specified on the service and the labels on the pods.
+
+# Networking
+
+Every node has an ip address. Node will most likely be a virtual machine. We can use this ip address to access the kubernetes node, SSH into it etc.
+
+Unlike the docker world a ip address will be assigned to each container, in Kubernetes world a ip address will be assigned to each pod. Each pod will get it's own internal ip address in the node.
+
+When kubernetes in initially configured we create an **_internal private network with the address 10.244.0.0_** and all the pods are attached to it. When you deploy multiple pods they all get a separate ip assigned in this network. The pods can communicate to each other with this ip.
+
+But accessing the other pods with this ip address may not be a good idea because it will change when pods are recreated. Another problem is two pods in two nodes might have the same internal ip address which might result inn conflicts.
+
+When a kubernetes cluster is setting up, kubernetes doesn't automatically set up any kind of networking to handle these issues.
+
+Kubernetes **expects us to setup networking to meet certain fundamental requirements**.
+
+- All the containers / PODs communicate to one and another without NAT
+- All nodes must be able to communicate with all containers and vice-versa without NAT
+
+But we don't need to set these up by our own because there are multiple prebuilt solutions available. Some of them are,
+
+- cisco
+- cilium
+- flannel
+- vmware nsx
+- etc.
+
+Depending on the platform we are deploying the cluster on, we will choose one of these solutions.
+
+What happens when after we implemented custom networking, it now manages the networks and ips in the nodes, and assign a different network address for each network in the node. ( Like 10.240.0.0 and 10.240.1.0)
+
+This creates a virtual network of all pods and nodes, and they are all assigned for unique ip address, and by using simple routing techniques the cluster networking enables communication between different nodes and pods.
